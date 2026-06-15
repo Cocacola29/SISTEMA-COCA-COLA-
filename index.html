@@ -23,16 +23,18 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             height: 100vh;
+            overflow: hidden;
         }
 
         /* Menú Lateral */
         .sidebar {
-            width: 250px;
+            width: 260px;
             background-color: var(--card-bg);
             border-right: 1px solid #e5e7eb;
             padding: 20px 0;
             display: flex;
             flex-direction: column;
+            overflow-y: auto;
         }
 
         .brand {
@@ -49,7 +51,7 @@
             border: none;
             text-align: left;
             padding: 15px 20px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--text-main);
             cursor: pointer;
             transition: all 0.2s;
@@ -82,6 +84,7 @@
 
         /* Tarjetas (Cards) */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px; }
         
         .card {
             background: var(--card-bg);
@@ -90,35 +93,28 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        .alert-box {
-            background-color: #fef2f2;
-            border: 1px solid #fca5a5;
-            color: #991b1b;
+        .alert-box, .success-box, .info-box {
             padding: 12px;
             border-radius: 6px;
             margin-bottom: 10px;
             font-size: 0.9rem;
         }
+        .alert-box { background-color: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; }
+        .success-box { background-color: #f0fdf4; border: 1px solid #86efac; color: #166534; }
+        .info-box { background-color: #eff6ff; border: 1px solid #93c5fd; color: #1e40af; }
 
-        .success-box {
-            background-color: #f0fdf4;
-            border: 1px solid #86efac;
-            color: #166534;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-        }
-
-        /* Tablas */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+        /* Tablas y KPIs */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
         th, td { padding: 10px; text-align: left; border-bottom: 1px solid #e5e7eb; }
         th { background-color: #f9fafb; color: var(--text-muted); }
 
-        .kpi-value { font-size: 2rem; font-weight: bold; color: var(--text-main); margin: 10px 0; }
-        .kpi-label { font-size: 0.9rem; color: var(--text-muted); }
-        .kpi-delta.good { color: #16a34a; }
-        .kpi-delta.bad { color: #dc2626; }
+        .kpi-value { font-size: 1.8rem; font-weight: bold; color: var(--text-main); margin: 5px 0; }
+        .kpi-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; font-weight: bold;}
+        .kpi-delta.good { color: #16a34a; font-size: 0.85rem;}
+        .kpi-delta.bad { color: #dc2626; font-size: 0.85rem;}
+        
+        .chart-container { position: relative; height: 300px; width: 100%; }
+        .chart-container-small { position: relative; height: 220px; width: 100%; }
     </style>
 </head>
 <body>
@@ -129,8 +125,10 @@
             <p>Arca Continental Lindley</p>
         </div>
         <button class="nav-btn active" onclick="showModule('demanda')">📦 Demanda e Inventarios</button>
-        <button class="nav-btn" onclick="showModule('sostenibilidad')">🌱 Sostenibilidad</button>
+        <button class="nav-btn" onclick="showModule('distribucion')">🚛 Distribución y Rutas</button>
+        <button class="nav-btn" onclick="showModule('sostenibilidad')">🌱 Sostenibilidad (IoT)</button>
         <button class="nav-btn" onclick="showModule('mercado')">📊 Análisis de Mercado</button>
+        <button class="nav-btn" onclick="showModule('clientes')">⭐ Atención al Cliente</button>
     </div>
 
     <div class="main-content">
@@ -138,184 +136,95 @@
         <div id="demanda" class="module-section active">
             <div class="header-title">
                 <h1>Módulo de Demanda e Inventarios</h1>
-                <p>Analítica predictiva con ML (Machine Learning) sobre ventas históricas.</p>
+                <p>Analítica predictiva con Machine Learning y control de almacén (Junio 2026).</p>
             </div>
             
             <div class="grid-2">
                 <div class="card">
-                    <h3>Alertas de Quiebre de Stock</h3>
-                    <div id="alerts-container">
-                        </div>
+                    <h3>Alertas del Sistema WMS</h3>
+                    <div id="alerts-container"></div>
                 </div>
                 <div class="card">
-                    <h3>Estado Actual del Almacén</h3>
+                    <h3>Estado Actual (Top SKUs)</h3>
                     <table>
                         <thead>
                             <tr>
                                 <th>Producto</th>
-                                <th>Stock Actual</th>
-                                <th>Demanda Predicha</th>
+                                <th>Stock</th>
+                                <th>Pronóstico</th>
                             </tr>
                         </thead>
-                        <tbody id="inventory-table">
-                            </tbody>
+                        <tbody id="inventory-table"></tbody>
                     </table>
                 </div>
             </div>
-            <div class="card">
-                <h3>Comparativa: Stock vs Demanda (Pronóstico)</h3>
-                <canvas id="chartInventario" height="80"></canvas>
+            
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Comparativa: Stock vs Demanda</h3>
+                    <div class="chart-container"><canvas id="chartInventario"></canvas></div>
+                </div>
+                <div class="card">
+                    <h3>Tendencia Histórica de Ventas (Ene - Jun)</h3>
+                    <div class="chart-container"><canvas id="chartTendencia"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="distribucion" class="module-section">
+            <div class="header-title">
+                <h1>Módulo de Distribución y Transporte</h1>
+                <p>Control de flotas, efectividad de entregas y costos logísticos por ruta.</p>
+            </div>
+
+            <div class="grid-3">
+                <div class="card">
+                    <div class="kpi-label">Efectividad de Entrega (OTIF)</div>
+                    <div class="kpi-value">94.2%</div>
+                    <div class="kpi-delta good">▲ +1.5% vs mes anterior</div>
+                </div>
+                <div class="card">
+                    <div class="kpi-label">Tiempo Prom. por Parada</div>
+                    <div class="kpi-value">12 Min</div>
+                    <div class="kpi-delta bad">▲ +2 min (Retraso zona centro)</div>
+                </div>
+                <div class="card">
+                    <div class="kpi-label">Vehículos en Ruta Activa</div>
+                    <div class="kpi-value">845 / 850</div>
+                    <div class="kpi-delta good">Óptimo funcionamiento</div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Costos Logísticos por Macro Ruta (Soles)</h3>
+                    <div class="chart-container"><canvas id="chartRutas"></canvas></div>
+                </div>
+                <div class="card">
+                    <h3>Cumplimiento de Entregas por Región</h3>
+                    <div class="chart-container"><canvas id="chartCumplimiento"></canvas></div>
+                </div>
             </div>
         </div>
 
         <div id="sostenibilidad" class="module-section">
             <div class="header-title">
                 <h1>Módulo de Sostenibilidad</h1>
-                <p>Sensores IoT: consumo hídrico y emisiones de CO2 por planta.</p>
+                <p>Sensores IoT: consumo hídrico y emisiones de CO2 por planta operativa.</p>
             </div>
 
             <div class="grid-2">
                 <div class="card">
-                    <div class="kpi-label">Consumo Hídrico Total (Miles de Litros)</div>
-                    <div class="kpi-value">2,450.00</div>
-                    <div class="kpi-delta good">▼ -5.2% vs mes anterior (Mejora)</div>
+                    <div class="kpi-label">Consumo Hídrico Total (Millones Lts)</div>
+                    <div class="kpi-value">2.45</div>
+                    <div class="kpi-delta good">▼ -5.2% (Meta de ahorro superada)</div>
                 </div>
                 <div class="card">
-                    <div class="kpi-label">Emisiones CO2 (Toneladas)</div>
-                    <div class="kpi-value">620.40</div>
-                    <div class="kpi-delta bad">▲ +1.1% vs mes anterior (Alerta)</div>
+                    <div class="kpi-label">Resina Reciclada Empleada</div>
+                    <div class="kpi-value">68%</div>
+                    <div class="kpi-delta good">▲ +3% (Hacia envases 100% reciclables)</div>
                 </div>
             </div>
             <div class="card">
-                <h3>Reporte de Sostenibilidad por Planta Operativa</h3>
-                <canvas id="chartSostenibilidad" height="100"></canvas>
-            </div>
-        </div>
-
-        <div id="mercado" class="module-section">
-            <div class="header-title">
-                <h1>Módulo de Análisis de Mercado</h1>
-                <p>Análisis de participación de mercado basado en preferencias del consumidor.</p>
-            </div>
-
-            <div class="grid-2">
-                <div class="card">
-                    <h3>Participación (Market Share)</h3>
-                    <canvas id="chartMercado"></canvas>
-                </div>
-                <div class="card">
-                    <h3>Oportunidades Identificadas</h3>
-                    <div class="success-box">
-                        <strong>🟢 Bebidas Sin Azúcar:</strong> Se proyecta un incremento del 15% en la demanda para el Q3. Recomendación: Aumentar producción de Coca-Cola Sin Azúcar 500ml.
-                    </div>
-                    <div class="success-box">
-                        <strong>🟢 Formatos Familiares:</strong> Alta rotación en canal tradicional (Bodegas). Mantener campañas de Inca Kola 3L.
-                    </div>
-                    <div class="alert-box">
-                        <strong>⚠️ Aguas y Rehidratantes:</strong> Competencia agresiva en precio. Sugerencia de promociones cruzadas para San Luis.
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <script>
-        // --- 1. BASE DE DATOS SIMULADA ---
-        const bd_inventario = [
-            { sku: 'SKU01', producto: 'Inca Kola 1.5L', stock: 850, demanda_ml: 1200 },
-            { sku: 'SKU02', producto: 'Coca-Cola Sin Azúcar 500ml', stock: 1500, demanda_ml: 950 },
-            { sku: 'SKU03', producto: 'Agua San Luis 2.5L', stock: 3200, demanda_ml: 2800 },
-            { sku: 'SKU04', producto: 'Sprite 3L', stock: 450, demanda_ml: 600 }
-        ];
-
-        const bd_plantas = ['Planta Lima', 'Planta Trujillo', 'Planta Arequipa', 'Planta Cajamarca'];
-        const datos_agua = [850, 600, 550, 450];
-        const datos_co2 = [210, 150, 140, 120.4];
-
-        // --- 2. LÓGICA DE NAVEGACIÓN ---
-        function showModule(moduleId) {
-            // Ocultar todos los módulos
-            document.querySelectorAll('.module-section').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-            
-            // Mostrar el seleccionado
-            document.getElementById(moduleId).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
-
-        // --- 3. PROCESAMIENTO: MÓDULO INVENTARIOS ---
-        const tabla = document.getElementById('inventory-table');
-        const alertasCont = document.getElementById('alerts-container');
-        
-        let labels_inv = [];
-        let data_stock = [];
-        let data_demanda = [];
-
-        bd_inventario.forEach(item => {
-            // Llenar datos para el gráfico
-            labels_inv.push(item.producto);
-            data_stock.push(item.stock);
-            data_demanda.push(item.demanda_ml);
-
-            // Llenar tabla
-            tabla.innerHTML += `<tr>
-                <td><strong>${item.producto}</strong></td>
-                <td>${item.stock}</td>
-                <td>${item.demanda_ml}</td>
-            </tr>`;
-
-            // Generar alertas (Lógica del DSS)
-            if (item.stock < item.demanda_ml) {
-                alertasCont.innerHTML += `
-                <div class="alert-box">
-                    <strong>⚠️ RIESGO IDENTIFICADO:</strong> ${item.producto}. 
-                    Stock (${item.stock}) insuficiente para cubrir demanda predicha (${item.demanda_ml}). <br>
-                    <em>Acción del sistema: Sugerencia de reposición automática activada.</em>
-                </div>`;
-            }
-        });
-
-        // --- 4. RENDERIZADO DE GRÁFICOS (Chart.js) ---
-        
-        // Gráfico 1: Inventario
-        new Chart(document.getElementById('chartInventario'), {
-            type: 'bar',
-            data: {
-                labels: labels_inv,
-                datasets: [
-                    { label: 'Stock Actual', data: data_stock, backgroundColor: '#94a3b8' },
-                    { label: 'Demanda Predicha (ML)', data: data_demanda, backgroundColor: '#e60000' }
-                ]
-            },
-            options: { responsive: true }
-        });
-
-        // Gráfico 2: Sostenibilidad
-        new Chart(document.getElementById('chartSostenibilidad'), {
-            type: 'bar',
-            data: {
-                labels: bd_plantas,
-                datasets: [
-                    { label: 'Consumo Hídrico (Miles Lts)', data: datos_agua, backgroundColor: '#3b82f6' },
-                    { label: 'Emisiones CO2 (Toneladas)', data: datos_co2, backgroundColor: '#64748b' }
-                ]
-            },
-            options: { responsive: true }
-        });
-
-        // Gráfico 3: Mercado
-        new Chart(document.getElementById('chartMercado'), {
-            type: 'doughnut',
-            data: {
-                labels: ['Gaseosas Negras', 'Gaseosas Amarillas', 'Aguas', 'Jugos e Isotónicos'],
-                datasets: [{
-                    data: [45, 30, 15, 10],
-                    backgroundColor: ['#1f2937', '#facc15', '#3b82f6', '#f97316']
-                }]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
-        });
-    </script>
-</body>
-</html>
+                <h3>Reporte de Monitoreo Ambiental por Planta</h3>
+                <div class="chart-container" style="height: 350
