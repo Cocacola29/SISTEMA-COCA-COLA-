@@ -1,322 +1,321 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Informe Técnico: DSS Coca-Cola</title>
-<style>
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
-  
-  body {
-    margin: 0;
-    padding: 20px;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    color: #1f2937;
-    line-height: 1.6;
-    background-color: #f3f4f6;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSS Coca-Cola - Arca Continental Lindley</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --coca-red: #e60000;
+            --dark-red: #991b1b;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+        }
 
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-    background-color: #ffffff;
-    padding: 40px 50px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-  }
-  
-  .cover-page {
-    border: 2px solid #991b1b;
-    padding: 40px;
-    text-align: center;
-    margin-bottom: 50px;
-    border-radius: 4px;
-    background-color: #fffaf9;
-  }
-  
-  .cover-title {
-    font-size: 24pt;
-    color: #991b1b;
-    font-weight: bold;
-    margin-top: 40px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  
-  .cover-subtitle {
-    font-size: 14pt;
-    color: #374151;
-    margin-top: 15px;
-    font-weight: normal;
-  }
-  
-  .cover-meta {
-    margin-top: 80px;
-    font-size: 11pt;
-    color: #4b5563;
-    line-height: 2;
-  }
-  
-  .header-container {
-    border-bottom: 3px solid #991b1b;
-    padding-bottom: 10px;
-    margin-bottom: 25px;
-    margin-top: 40px;
-  }
-  
-  .university {
-    font-size: 12pt;
-    font-weight: bold;
-    color: #374151;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  .course {
-    font-size: 10pt;
-    color: #6b7280;
-    margin-top: 3px;
-  }
-  
-  h1 { font-size: 18pt; color: #991b1b; margin: 10px 0; font-weight: 700; }
-  
-  h2 {
-    font-size: 15pt;
-    color: #991b1b;
-    border-left: 4px solid #991b1b;
-    padding-left: 10px;
-    margin-top: 35px;
-    margin-bottom: 15px;
-  }
-  
-  h3 {
-    font-size: 12pt;
-    color: #111827;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    font-weight: bold;
-  }
-  
-  p { margin-top: 0; margin-bottom: 15px; text-align: justify; }
-  
-  ul, ol { margin-top: 0; margin-bottom: 15px; padding-left: 20px; }
-  
-  li { margin-bottom: 8px; text-align: justify; }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0 30px 0;
-  }
-  
-  th {
-    background-color: #991b1b;
-    color: #ffffff;
-    font-weight: bold;
-    text-align: left;
-    padding: 10px 12px;
-    font-size: 10pt;
-    border: 1px solid #991b1b;
-  }
-  
-  td {
-    padding: 10px 12px;
-    border: 1px solid #e5e7eb;
-    font-size: 9.5pt;
-    vertical-align: top;
-  }
-  
-  tr:nth-child(even) { background-color: #f9fafb; }
-  
-  .code-block {
-    background-color: #1f2937;
-    color: #f3f4f6;
-    border-radius: 6px;
-    padding: 15px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 9.5pt;
-    white-space: pre-wrap;
-    margin: 15px 0;
-    overflow-x: auto;
-  }
-  
-  .badge {
-    background-color: #fee2e2;
-    color: #991b1b;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 9pt;
-    font-weight: bold;
-    font-family: monospace;
-  }
-  
-  @media (max-width: 768px) {
-    .container { padding: 20px; }
-    .cover-page { padding: 20px; }
-    table, th, td { font-size: 8.5pt; }
-  }
-</style>
+        * { box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; }
+
+        body {
+            margin: 0;
+            display: flex;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            height: 100vh;
+        }
+
+        /* Menú Lateral */
+        .sidebar {
+            width: 250px;
+            background-color: var(--card-bg);
+            border-right: 1px solid #e5e7eb;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            padding: 0 20px 20px;
+            border-bottom: 2px solid var(--coca-red);
+            margin-bottom: 20px;
+        }
+
+        .brand h2 { margin: 0; color: var(--coca-red); font-size: 1.2rem; }
+        .brand p { margin: 5px 0 0; font-size: 0.8rem; color: var(--text-muted); }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            text-align: left;
+            padding: 15px 20px;
+            font-size: 1rem;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-btn:hover { background-color: #f9fafb; color: var(--coca-red); }
+        .nav-btn.active { 
+            background-color: #fee2e2; 
+            color: var(--dark-red); 
+            border-left-color: var(--coca-red); 
+            font-weight: bold;
+        }
+
+        /* Contenido Principal */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .module-section { display: none; }
+        .module-section.active { display: block; animation: fadeIn 0.4s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .header-title { border-bottom: 3px solid var(--coca-red); padding-bottom: 10px; margin-bottom: 25px; }
+        .header-title h1 { margin: 0; color: var(--dark-red); }
+        .header-title p { margin: 5px 0 0; color: var(--text-muted); }
+
+        /* Tarjetas (Cards) */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        
+        .card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .alert-box {
+            background-color: #fef2f2;
+            border: 1px solid #fca5a5;
+            color: #991b1b;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .success-box {
+            background-color: #f0fdf4;
+            border: 1px solid #86efac;
+            color: #166534;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* Tablas */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+        th { background-color: #f9fafb; color: var(--text-muted); }
+
+        .kpi-value { font-size: 2rem; font-weight: bold; color: var(--text-main); margin: 10px 0; }
+        .kpi-label { font-size: 0.9rem; color: var(--text-muted); }
+        .kpi-delta.good { color: #16a34a; }
+        .kpi-delta.bad { color: #dc2626; }
+    </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="cover-page">
-    <div class="university">FACULTAD DE INGENIERÍA</div>
-    <div class="course" style="font-size: 12pt; font-weight: bold; margin-top: 5px;">CARRERA DE INGENIERÍA EMPRESARIAL</div>
-    <div style="margin-top: 25px; color: #6b7280; font-size: 11pt;">CURSO: TECNOLOGÍAS DE LA INFORMACIÓN APLICADA A LOS NEGOCIOS</div>
-    
-    <div class="cover-title">COCA - COLA</div>
-    <div class="cover-subtitle">Diseño e Implementación de un Sistema de Soporte a la Decisión (DSS) y Arquitectura de Datos</div>
-    
-    <div class="cover-meta">
-      <strong>Docente:</strong> Dra. Ing. Karina Milagritos Aguilar Julca<br>
-      <strong>Ciclo Académico:</strong> 2026<br>
+    <div class="sidebar">
+        <div class="brand">
+            <h2>DSS Interactivo</h2>
+            <p>Arca Continental Lindley</p>
+        </div>
+        <button class="nav-btn active" onclick="showModule('demanda')">📦 Demanda e Inventarios</button>
+        <button class="nav-btn" onclick="showModule('sostenibilidad')">🌱 Sostenibilidad</button>
+        <button class="nav-btn" onclick="showModule('mercado')">📊 Análisis de Mercado</button>
     </div>
-  </div>
 
-  <div class="header-container">
-    <div class="university">1. Descripción de la Empresa</div>
-  </div>
+    <div class="main-content">
+        
+        <div id="demanda" class="module-section active">
+            <div class="header-title">
+                <h1>Módulo de Demanda e Inventarios</h1>
+                <p>Analítica predictiva con ML (Machine Learning) sobre ventas históricas.</p>
+            </div>
+            
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Alertas de Quiebre de Stock</h3>
+                    <div id="alerts-container">
+                        </div>
+                </div>
+                <div class="card">
+                    <h3>Estado Actual del Almacén</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Stock Actual</th>
+                                <th>Demanda Predicha</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-table">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Comparativa: Stock vs Demanda (Pronóstico)</h3>
+                <canvas id="chartInventario" height="80"></canvas>
+            </div>
+        </div>
 
-  <p><strong>Empresa:</strong> Coca-Cola (Operaciones en Perú a través de Arca Continental Lindley).</p>
-  <p>Coca-Cola en Perú opera como un sólido sistema estratégico conformado por The Coca-Cola Company y su socio embotellador Arca Continental Lindley, consolidándose como el líder indiscutible del mercado de bebidas no alcohólicas al combinar el prestigio de marcas globales con el profundo arraigo local de Inca Kola. Con una infraestructura industrial de vanguardia que incluye ocho plantas de producción a nivel nacional, la empresa destaca por su potente red logística capaz de abastecer a más de 250,000 clientes, principalmente del canal tradicional (bodegas), mientras lidera ambiciosos proyectos de sostenibilidad en gestión hídrica y economía circular.</p>
+        <div id="sostenibilidad" class="module-section">
+            <div class="header-title">
+                <h1>Módulo de Sostenibilidad</h1>
+                <p>Sensores IoT: consumo hídrico y emisiones de CO2 por planta.</p>
+            </div>
 
-  <h3>1.1. Misión y Visión</h3>
-  <p><strong>Misión:</strong> Refrescar al mundo y marcar la diferencia en la vida de las personas, las comunidades y el planeta, a través de un portafolio de bebidas líder que genere valor económico, social y ambiental sostenible en el mercado peruano.</p>
-  <p><strong>Visión:</strong> Ser el líder total de bebidas en el Perú, reconocido por la excelencia en su operación, la cercanía con sus clientes y consumidores, y por su compromiso con el desarrollo sostenible.</p>
+            <div class="grid-2">
+                <div class="card">
+                    <div class="kpi-label">Consumo Hídrico Total (Miles de Litros)</div>
+                    <div class="kpi-value">2,450.00</div>
+                    <div class="kpi-delta good">▼ -5.2% vs mes anterior (Mejora)</div>
+                </div>
+                <div class="card">
+                    <div class="kpi-label">Emisiones CO2 (Toneladas)</div>
+                    <div class="kpi-value">620.40</div>
+                    <div class="kpi-delta bad">▲ +1.1% vs mes anterior (Alerta)</div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Reporte de Sostenibilidad por Planta Operativa</h3>
+                <canvas id="chartSostenibilidad" height="100"></canvas>
+            </div>
+        </div>
 
-  <h2>2. Realidad Problemática y Objetivos</h2>
-  <h3>2.1. Realidad Problemática</h3>
-  <p>Arca Continental Lindley opera una de las redes de distribución más grandes, abasteciendo a más de 250,000 puntos de venta. No obstante, presenta tres problemas críticos:</p>
-  <ol>
-    <li><strong>Procesamiento manual de pedidos:</strong> En múltiples zonas aún se depende de procesos analógicos con conectividad limitada, ocasionando errores de transcripción y retrasos.</li>
-    <li><strong>Falta de visibilidad en tiempo real en almacenes:</strong> Impide a los supervisores identificar cuellos de botella en el proceso de <em>picking</em>.</li>
-    <li><strong>Optimización empírica de rutas:</strong> La distribución carece del aprovechamiento pleno de analítica geoespacial e inteligencia artificial.</li>
-  </ol>
+        <div id="mercado" class="module-section">
+            <div class="header-title">
+                <h1>Módulo de Análisis de Mercado</h1>
+                <p>Análisis de participación de mercado basado en preferencias del consumidor.</p>
+            </div>
 
-  <h3>2.2. Objetivos Estratégicos</h3>
-  <ul>
-    <li><strong>Liderazgo de Bebidas Totales:</strong> Consolidar el primer lugar en gaseosas, aguas, jugos e hidratantes.</li>
-    <li><strong>Digitalización del Bodeguero:</strong> Modernizar los canales tradicionales con herramientas digitales de pedido.</li>
-    <li><strong>Eficiencia Operativa:</strong> Optimizar la cadena de suministro reduciendo la huella de carbono.</li>
-  </ul>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Participación (Market Share)</h3>
+                    <canvas id="chartMercado"></canvas>
+                </div>
+                <div class="card">
+                    <h3>Oportunidades Identificadas</h3>
+                    <div class="success-box">
+                        <strong>🟢 Bebidas Sin Azúcar:</strong> Se proyecta un incremento del 15% en la demanda para el Q3. Recomendación: Aumentar producción de Coca-Cola Sin Azúcar 500ml.
+                    </div>
+                    <div class="success-box">
+                        <strong>🟢 Formatos Familiares:</strong> Alta rotación en canal tradicional (Bodegas). Mantener campañas de Inca Kola 3L.
+                    </div>
+                    <div class="alert-box">
+                        <strong>⚠️ Aguas y Rehidratantes:</strong> Competencia agresiva en precio. Sugerencia de promociones cruzadas para San Luis.
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <h2>3. Alineamiento de Estrategias de Negocio y TI</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Estrategia de Negocio</th>
-        <th>Estrategia de TI Vinculada</th>
-        <th>Tecnologías e Impacto</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Gestión Inteligente de Inventarios</td>
-        <td>Analítica Avanzada y Big Data</td>
-        <td>Machine Learning, Python, Power BI. Reduce quiebres de stock.</td>
-      </tr>
-      <tr>
-        <td>Optimización de la Distribución</td>
-        <td>Digitalización Logística</td>
-        <td>ERP integrado, Apps móviles, TMS y GPS. Reduce costos.</td>
-      </tr>
-      <tr>
-        <td>Sostenibilidad en Información</td>
-        <td>Monitoreo Ambiental Inteligente</td>
-        <td>Sensores IoT y reportes automatizados de huella hídrica.</td>
-      </tr>
-    </tbody>
-  </table>
+    </div>
 
-  <h2>4. Implementación del Sistema de Soporte a la Decisión (DSS)</h2>
-  <p>El DSS propuesto integra datos del ERP, WMS y TMS para resolver la falta de visibilidad analítica. Sus módulos principales son:</p>
-  <ul>
-    <li><strong>Módulo de Demanda e Inventarios:</strong> Predicciones con Machine Learning para asegurar stock.</li>
-    <li><strong>Módulo de Sostenibilidad:</strong> Captura de datos vía sensores IoT.</li>
-    <li><strong>Módulo de Análisis de Mercado:</strong> Evaluación de participación de mercado.</li>
-  </ul>
+    <script>
+        // --- 1. BASE DE DATOS SIMULADA ---
+        const bd_inventario = [
+            { sku: 'SKU01', producto: 'Inca Kola 1.5L', stock: 850, demanda_ml: 1200 },
+            { sku: 'SKU02', producto: 'Coca-Cola Sin Azúcar 500ml', stock: 1500, demanda_ml: 950 },
+            { sku: 'SKU03', producto: 'Agua San Luis 2.5L', stock: 3200, demanda_ml: 2800 },
+            { sku: 'SKU04', producto: 'Sprite 3L', stock: 450, demanda_ml: 600 }
+        ];
 
-  <h2>5. Modelamiento Dimensional (Kimball)</h2>
-  <h3>5.1. Dimensiones y Jerarquías</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>Dimensión Analítica</th>
-        <th>Atributo Clave (PK)</th>
-        <th>Nivel Jerárquico Medio</th>
-        <th>Nivel Jerárquico Detalle</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Dim_Tiempo</td>
-        <td>tiempo_key</td>
-        <td>Año / Trimestre</td>
-        <td>Mes / Día / Turno</td>
-      </tr>
-      <tr>
-        <td>Dim_Producto</td>
-        <td>producto_key</td>
-        <td>Categoría</td>
-        <td>Nombre Producto / SKU</td>
-      </tr>
-      <tr>
-        <td>Dim_Cliente_Ubicacion</td>
-        <td>cliente_ubicacion_key</td>
-        <td>Región / Provincia</td>
-        <td>Distrito / Nombre Cliente</td>
-      </tr>
-      <tr>
-        <td>Dim_Bodeguero</td>
-        <td>bodeguero_key</td>
-        <td>Área Almacén</td>
-        <td>Código / Nombre Bodeguero</td>
-      </tr>
-      <tr>
-        <td>Dim_Ruta_Logistica</td>
-        <td>ruta_key</td>
-        <td>Tipo Vehículo</td>
-        <td>Ruta / Transportista</td>
-      </tr>
-    </tbody>
-  </table>
+        const bd_plantas = ['Planta Lima', 'Planta Trujillo', 'Planta Arequipa', 'Planta Cajamarca'];
+        const datos_agua = [850, 600, 550, 450];
+        const datos_co2 = [210, 150, 140, 120.4];
 
-  <h3>5.2. Estructura de Tablas de Hechos</h3>
-  <div class="code-block">
--- 1. Tabla de Hechos: Gestión Logística de Pedidos
-Fact_pedidos_logistica(
-    tiempo_key (FK), cliente_ubicacion_key (FK), 
-    producto_key (FK), bodeguero_key (FK), ruta_key (FK), 
-    numero_pedido, numero_guia_remision, cantidad_solicitada, 
-    cantidad_preparada, tiempo_preparacion_minutos, 
-    costo_transporte_ruta, dias_desviacion_entrega, pedido_exitoso_flag
-)
+        // --- 2. LÓGICA DE NAVEGACIÓN ---
+        function showModule(moduleId) {
+            // Ocultar todos los módulos
+            document.querySelectorAll('.module-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            
+            // Mostrar el seleccionado
+            document.getElementById(moduleId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
 
--- 2. Tabla de Hechos: Control de Almacenamiento
-fact_control_almacen(
-    tiempo_key (FK), producto_key (FK), bodeguero_key (FK), 
-    stock_inicial, stock_final, movimientos_almacen, 
-    tiempo_reposicion_minutos, nivel_ocupacion_almacen
-)
+        // --- 3. PROCESAMIENTO: MÓDULO INVENTARIOS ---
+        const tabla = document.getElementById('inventory-table');
+        const alertasCont = document.getElementById('alerts-container');
+        
+        let labels_inv = [];
+        let data_stock = [];
+        let data_demanda = [];
 
--- 3. Tabla de Hechos: Distribución de Rutas y Flotas
-Fact_distribucion_rutas(
-    tiempo_key (FK), ruta_key (FK), cliente_ubicacion_key (FK), 
-    total_entregas, costo_total_ruta, tiempo_promedio_entrega, 
-    pedidos_retrasados, distancia_recorrida_km
-)
-  </div>
+        bd_inventario.forEach(item => {
+            // Llenar datos para el gráfico
+            labels_inv.push(item.producto);
+            data_stock.push(item.stock);
+            data_demanda.push(item.demanda_ml);
 
-  <h2>6. Dashboard Interactivo de Resultados</h2>
-  <p><em>(Aquí puedes insertar el código iframe de Power BI publicando tu informe en la web)</em></p>
-  <div style="border: 2px dashed #9ca3af; padding: 40px; text-align: center; background-color: #f9fafb; border-radius: 8px; color: #6b7280; margin-top: 15px;">
-    &lt;iframe title="Reporte_Coca_Cola" width="100%" height="500" src="TU_ENLACE_DE_POWER_BI_AQUÍ" frameborder="0" allowFullScreen="true"&gt;&lt;/iframe&gt;
-  </div>
+            // Llenar tabla
+            tabla.innerHTML += `<tr>
+                <td><strong>${item.producto}</strong></td>
+                <td>${item.stock}</td>
+                <td>${item.demanda_ml}</td>
+            </tr>`;
 
-</div>
+            // Generar alertas (Lógica del DSS)
+            if (item.stock < item.demanda_ml) {
+                alertasCont.innerHTML += `
+                <div class="alert-box">
+                    <strong>⚠️ RIESGO IDENTIFICADO:</strong> ${item.producto}. 
+                    Stock (${item.stock}) insuficiente para cubrir demanda predicha (${item.demanda_ml}). <br>
+                    <em>Acción del sistema: Sugerencia de reposición automática activada.</em>
+                </div>`;
+            }
+        });
 
+        // --- 4. RENDERIZADO DE GRÁFICOS (Chart.js) ---
+        
+        // Gráfico 1: Inventario
+        new Chart(document.getElementById('chartInventario'), {
+            type: 'bar',
+            data: {
+                labels: labels_inv,
+                datasets: [
+                    { label: 'Stock Actual', data: data_stock, backgroundColor: '#94a3b8' },
+                    { label: 'Demanda Predicha (ML)', data: data_demanda, backgroundColor: '#e60000' }
+                ]
+            },
+            options: { responsive: true }
+        });
+
+        // Gráfico 2: Sostenibilidad
+        new Chart(document.getElementById('chartSostenibilidad'), {
+            type: 'bar',
+            data: {
+                labels: bd_plantas,
+                datasets: [
+                    { label: 'Consumo Hídrico (Miles Lts)', data: datos_agua, backgroundColor: '#3b82f6' },
+                    { label: 'Emisiones CO2 (Toneladas)', data: datos_co2, backgroundColor: '#64748b' }
+                ]
+            },
+            options: { responsive: true }
+        });
+
+        // Gráfico 3: Mercado
+        new Chart(document.getElementById('chartMercado'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Gaseosas Negras', 'Gaseosas Amarillas', 'Aguas', 'Jugos e Isotónicos'],
+                datasets: [{
+                    data: [45, 30, 15, 10],
+                    backgroundColor: ['#1f2937', '#facc15', '#3b82f6', '#f97316']
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+    </script>
 </body>
 </html>
