@@ -73,11 +73,9 @@
             overflow-y: auto;
         }
 
+        /* Ocultar secciones por defecto */
         .module-section { display: none; }
-        .module-section.active { display: block; animation: fadeIn 0.4s ease; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
+        
         .header-title { border-bottom: 3px solid var(--coca-red); padding-bottom: 10px; margin-bottom: 25px; }
         .header-title h1 { margin: 0; color: var(--dark-red); }
         .header-title p { margin: 5px 0 0; color: var(--text-muted); }
@@ -114,7 +112,6 @@
         .kpi-delta.bad { color: #dc2626; font-size: 0.85rem;}
         
         .chart-container { position: relative; height: 300px; width: 100%; }
-        .chart-container-small { position: relative; height: 220px; width: 100%; }
     </style>
 </head>
 <body>
@@ -124,16 +121,16 @@
             <h2>DSS Interactivo</h2>
             <p>Arca Continental Lindley</p>
         </div>
-        <button class="nav-btn active" onclick="showModule('demanda')">📦 Demanda e Inventarios</button>
-        <button class="nav-btn" onclick="showModule('distribucion')">🚛 Distribución y Rutas</button>
-        <button class="nav-btn" onclick="showModule('sostenibilidad')">🌱 Sostenibilidad (IoT)</button>
-        <button class="nav-btn" onclick="showModule('mercado')">📊 Análisis de Mercado</button>
-        <button class="nav-btn" onclick="showModule('clientes')">⭐ Atención al Cliente</button>
+        <button class="nav-btn active" onclick="showModule(event, 'demanda')">📦 Demanda e Inventarios</button>
+        <button class="nav-btn" onclick="showModule(event, 'distribucion')">🚛 Distribución y Rutas</button>
+        <button class="nav-btn" onclick="showModule(event, 'sostenibilidad')">🌱 Sostenibilidad (IoT)</button>
+        <button class="nav-btn" onclick="showModule(event, 'mercado')">📊 Análisis de Mercado</button>
+        <button class="nav-btn" onclick="showModule(event, 'clientes')">⭐ Atención al Cliente</button>
     </div>
 
     <div class="main-content">
         
-        <div id="demanda" class="module-section active">
+        <div id="demanda" class="module-section" style="display: block;">
             <div class="header-title">
                 <h1>Módulo de Demanda e Inventarios</h1>
                 <p>Analítica predictiva con Machine Learning y control de almacén (Junio 2026).</p>
@@ -165,7 +162,7 @@
                     <div class="chart-container"><canvas id="chartInventario"></canvas></div>
                 </div>
                 <div class="card">
-                    <h3>Tendencia Histórica de Ventas (Ene - Jun)</h3>
+                    <h3>Tendencia Histórica de Ventas</h3>
                     <div class="chart-container"><canvas id="chartTendencia"></canvas></div>
                 </div>
             </div>
@@ -197,7 +194,7 @@
 
             <div class="grid-2">
                 <div class="card">
-                    <h3>Costos Logísticos por Macro Ruta (Soles)</h3>
+                    <h3>Costos Logísticos por Macro Ruta (S/.)</h3>
                     <div class="chart-container"><canvas id="chartRutas"></canvas></div>
                 </div>
                 <div class="card">
@@ -227,4 +224,166 @@
             </div>
             <div class="card">
                 <h3>Reporte de Monitoreo Ambiental por Planta</h3>
-                <div class="chart-container" style="height: 350
+                <div class="chart-container" style="height: 350px;"><canvas id="chartSostenibilidad"></canvas></div>
+            </div>
+        </div>
+
+        <div id="mercado" class="module-section">
+            <div class="header-title">
+                <h1>Módulo de Análisis de Mercado</h1>
+                <p>Participación de mercado y segmentación de portafolio.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Market Share (Por Categoría)</h3>
+                    <div class="chart-container"><canvas id="chartMercado"></canvas></div>
+                </div>
+                <div class="card">
+                    <h3>Alertas Comerciales Automatizadas</h3>
+                    <div class="success-box">
+                        <strong>🟢 Crecimiento Sin Azúcar:</strong> Demanda de portafolio Zero creció 15%. Recomendación: Ajustar producción WMS.
+                    </div>
+                    <div class="success-box">
+                        <strong>🟢 Canal Tradicional:</strong> Bodegas mantienen alta rotación de formatos familiares (Inca Kola 3L).
+                    </div>
+                    <div class="info-box">
+                        <strong>ℹ️ Competencia en Jugos:</strong> Incremento de promociones de la competencia detectado en zona sur.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="clientes" class="module-section">
+            <div class="header-title">
+                <h1>Módulo de Atención al Cliente (Bodegueros)</h1>
+                <p>Medición de nivel de servicio e incidencias generadas en el canal tradicional.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Índice de Satisfacción (Bodegueros)</h3>
+                    <div class="chart-container"><canvas id="chartSatisfaccion"></canvas></div>
+                </div>
+                <div class="card">
+                    <h3>Tipos de Incidencias Registradas</h3>
+                    <div class="chart-container"><canvas id="chartIncidencias"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función de navegación segura
+        function showModule(event, moduleId) {
+            document.querySelectorAll('.module-section').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(moduleId).style.display = 'block';
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            } else {
+                let defaultBtn = document.querySelector(`button[onclick*="${moduleId}"]`);
+                if (defaultBtn) defaultBtn.classList.add('active');
+            }
+        }
+
+        // Ejecutar TODO solo cuando la página haya cargado al 100%
+        window.onload = function() {
+            try {
+                // 1. Datos e Inserción en Tabla
+                const bd_inventario = [
+                    { producto: 'Inca Kola 1.5L', stock: 850, demanda_ml: 1200 },
+                    { producto: 'Coca Sin Azúcar 500ml', stock: 1500, demanda_ml: 950 },
+                    { producto: 'Agua San Luis 2.5L', stock: 3200, demanda_ml: 2800 },
+                    { producto: 'Sprite 3L', stock: 450, demanda_ml: 600 }
+                ];
+
+                const tabla = document.getElementById('inventory-table');
+                const alertasCont = document.getElementById('alerts-container');
+                let labels_inv = [], data_stock = [], data_demanda = [];
+
+                bd_inventario.forEach(item => {
+                    labels_inv.push(item.producto);
+                    data_stock.push(item.stock);
+                    data_demanda.push(item.demanda_ml);
+                    
+                    // Inserción segura de filas
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = `<td><strong>${item.producto}</strong></td><td>${item.stock}</td><td>${item.demanda_ml}</td>`;
+                    tabla.appendChild(tr);
+                    
+                    if (item.stock < item.demanda_ml) {
+                        let div = document.createElement('div');
+                        div.className = 'alert-box';
+                        div.innerHTML = `<strong>⚠️ QUIEBRE INMINENTE:</strong> ${item.producto}. Stock: ${item.stock} | Pronóstico: ${item.demanda_ml}. <br><em>Generando orden automática en ERP...</em>`;
+                        alertasCont.appendChild(div);
+                    }
+                });
+
+                // 2. Truco para que Chart.js dibuje correctamente en pestañas ocultas
+                document.querySelectorAll('.module-section').forEach(el => el.style.display = 'block');
+
+                // 3. Dibujar Gráficos
+                Chart.defaults.font.family = "'Helvetica Neue', Arial, sans-serif";
+
+                new Chart(document.getElementById('chartInventario'), {
+                    type: 'bar',
+                    data: { labels: labels_inv, datasets: [
+                        { label: 'Stock Actual', data: data_stock, backgroundColor: '#94a3b8' },
+                        { label: 'Pronóstico', data: data_demanda, backgroundColor: '#e60000' }
+                    ]}, options: { responsive: true, maintainAspectRatio: false }
+                });
+
+                new Chart(document.getElementById('chartTendencia'), {
+                    type: 'line',
+                    data: { labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'], datasets: [{ label: 'Ventas Reales', data: [120, 135, 125, 140, 155, 160], borderColor: '#991b1b', fill: true, backgroundColor: 'rgba(153, 27, 27, 0.1)' }] },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+
+                new Chart(document.getElementById('chartRutas'), {
+                    type: 'bar',
+                    data: { labels: ['Ruta Lima', 'Ruta Norte', 'Ruta Sur', 'Ruta Centro'], datasets: [{ label: 'Costos S/.', data: [45000, 28000, 32000, 21000], backgroundColor: ['#1f2937', '#e60000', '#facc15', '#3b82f6'] }] },
+                    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false }
+                });
+
+                new Chart(document.getElementById('chartCumplimiento'), {
+                    type: 'radar',
+                    data: { labels: ['A Tiempo', 'Integridad', 'Ruta', 'Devoluciones', 'Vehículos'], datasets: [{ label: 'Indicadores', data: [95, 98, 85, 90, 88], backgroundColor: 'rgba(230, 0, 0, 0.2)', borderColor: '#e60000' }] },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+
+                new Chart(document.getElementById('chartSostenibilidad'), {
+                    type: 'bar',
+                    data: { labels: ['Lima', 'Trujillo', 'Arequipa', 'Cajamarca'], datasets: [ { type: 'bar', label: 'Agua (Mil Lts)', data: [850, 600, 550, 450], backgroundColor: '#3b82f6' }, { type: 'line', label: 'CO2 (Ton)', data: [210, 150, 140, 120], borderColor: '#64748b', borderWidth: 3 } ] },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+
+                new Chart(document.getElementById('chartMercado'), {
+                    type: 'doughnut',
+                    data: { labels: ['Negras', 'Amarillas', 'Aguas', 'Jugos'], datasets: [{ data: [45, 30, 15, 10], backgroundColor: ['#1f2937', '#facc15', '#3b82f6', '#f97316'] }] },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+
+                new Chart(document.getElementById('chartSatisfaccion'), {
+                    type: 'polarArea',
+                    data: { labels: ['Muy Satisfecho', 'Satisfecho', 'Neutral', 'Insatisfecho'], datasets: [{ data: [65, 25, 8, 2], backgroundColor: ['#16a34a', '#86efac', '#facc15', '#ef4444'] }] },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+
+                new Chart(document.getElementById('chartIncidencias'), {
+                    type: 'pie',
+                    data: { labels: ['Daño', 'Incompleto', 'Retraso', 'Facturación'], datasets: [{ data: [40, 25, 20, 15], backgroundColor: ['#dc2626', '#f97316', '#facc15', '#94a3b8'] }] },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+
+                // 4. Restaurar el estado inicial (mostrar solo Demanda)
+                showModule(null, 'demanda');
+
+            } catch(e) {
+                console.error("Error al cargar:", e);
+            }
+        };
+    </script>
+</body>
+</html>
