@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informe Técnico: DSS Coca-Cola</title>
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    padding: 20px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #1f2937;
+    line-height: 1.6;
+    background-color: #f3f4f6;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 40px 50px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .cover-page {
+    border: 2px solid #991b1b;
+    padding: 40px;
+    text-align: center;
+    margin-bottom: 50px;
+    border-radius: 4px;
+    background-color: #fffaf9;
+  }
+  
+  .cover-title {
+    font-size: 24pt;
+    color: #991b1b;
+    font-weight: bold;
+    margin-top: 40px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .cover-subtitle {
+    font-size: 14pt;
+    color: #374151;
+    margin-top: 15px;
+    font-weight: normal;
+  }
+  
+  .cover-meta {
+    margin-top: 80px;
+    font-size: 11pt;
+    color: #4b5563;
+    line-height: 2;
+  }
+  
+  .header-container {
+    border-bottom: 3px solid #991b1b;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    margin-top: 40px;
+  }
+  
+  .university {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #374151;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .course {
+    font-size: 10pt;
+    color: #6b7280;
+    margin-top: 3px;
+  }
+  
+  h1 { font-size: 18pt; color: #991b1b; margin: 10px 0; font-weight: 700; }
+  
+  h2 {
+    font-size: 15pt;
+    color: #991b1b;
+    border-left: 4px solid #991b1b;
+    padding-left: 10px;
+    margin-top: 35px;
+    margin-bottom: 15px;
+  }
+  
+  h3 {
+    font-size: 12pt;
+    color: #111827;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  p { margin-top: 0; margin-bottom: 15px; text-align: justify; }
+  
+  ul, ol { margin-top: 0; margin-bottom: 15px; padding-left: 20px; }
+  
+  li { margin-bottom: 8px; text-align: justify; }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0 30px 0;
+  }
+  
+  th {
+    background-color: #991b1b;
+    color: #ffffff;
+    font-weight: bold;
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 10pt;
+    border: 1px solid #991b1b;
+  }
+  
+  td {
+    padding: 10px 12px;
+    border: 1px solid #e5e7eb;
+    font-size: 9.5pt;
+    vertical-align: top;
+  }
+  
+  tr:nth-child(even) { background-color: #f9fafb; }
+  
+  .code-block {
+    background-color: #1f2937;
+    color: #f3f4f6;
+    border-radius: 6px;
+    padding: 15px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9.5pt;
+    white-space: pre-wrap;
+    margin: 15px 0;
+    overflow-x: auto;
+  }
+  
+  .badge {
+    background-color: #fee2e2;
+    color: #991b1b;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 9pt;
+    font-weight: bold;
+    font-family: monospace;
+  }
+  
+  @media (max-width: 768px) {
+    .container { padding: 20px; }
+    .cover-page { padding: 20px; }
+    table, th, td { font-size: 8.5pt; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="cover-page">
+    <div class="university">FACULTAD DE INGENIERÍA</div>
+    <div class="course" style="font-size: 12pt; font-weight: bold; margin-top: 5px;">CARRERA DE INGENIERÍA EMPRESARIAL</div>
+    <div style="margin-top: 25px; color: #6b7280; font-size: 11pt;">CURSO: TECNOLOGÍAS DE LA INFORMACIÓN APLICADA A LOS NEGOCIOS</div>
+    
+    <div class="cover-title">COCA - COLA</div>
+    <div class="cover-subtitle">Diseño e Implementación de un Sistema de Soporte a la Decisión (DSS) y Arquitectura de Datos</div>
+    
+    <div class="cover-meta">
+      <strong>Docente:</strong> Dra. Ing. Karina Milagritos Aguilar Julca<br>
+      <strong>Ciclo Académico:</strong> 2026<br>
+    </div>
+  </div>
+
+  <div class="header-container">
+    <div class="university">1. Descripción de la Empresa</div>
+  </div>
+
+  <p><strong>Empresa:</strong> Coca-Cola (Operaciones en Perú a través de Arca Continental Lindley).</p>
+  <p>Coca-Cola en Perú opera como un sólido sistema estratégico conformado por The Coca-Cola Company y su socio embotellador Arca Continental Lindley, consolidándose como el líder indiscutible del mercado de bebidas no alcohólicas al combinar el prestigio de marcas globales con el profundo arraigo local de Inca Kola. Con una infraestructura industrial de vanguardia que incluye ocho plantas de producción a nivel nacional, la empresa destaca por su potente red logística capaz de abastecer a más de 250,000 clientes, principalmente del canal tradicional (bodegas), mientras lidera ambiciosos proyectos de sostenibilidad en gestión hídrica y economía circular.</p>
+
+  <h3>1.1. Misión y Visión</h3>
+  <p><strong>Misión:</strong> Refrescar al mundo y marcar la diferencia en la vida de las personas, las comunidades y el planeta, a través de un portafolio de bebidas líder que genere valor económico, social y ambiental sostenible en el mercado peruano.</p>
+  <p><strong>Visión:</strong> Ser el líder total de bebidas en el Perú, reconocido por la excelencia en su operación, la cercanía con sus clientes y consumidores, y por su compromiso con el desarrollo sostenible.</p>
+
+  <h2>2. Realidad Problemática y Objetivos</h2>
+  <h3>2.1. Realidad Problemática</h3>
+  <p>Arca Continental Lindley opera una de las redes de distribución más grandes, abasteciendo a más de 250,000 puntos de venta. No obstante, presenta tres problemas críticos:</p>
+  <ol>
+    <li><strong>Procesamiento manual de pedidos:</strong> En múltiples zonas aún se depende de procesos analógicos con conectividad limitada, ocasionando errores de transcripción y retrasos.</li>
+    <li><strong>Falta de visibilidad en tiempo real en almacenes:</strong> Impide a los supervisores identificar cuellos de botella en el proceso de <em>picking</em>.</li>
+    <li><strong>Optimización empírica de rutas:</strong> La distribución carece del aprovechamiento pleno de analítica geoespacial e inteligencia artificial.</li>
+  </ol>
+
+  <h3>2.2. Objetivos Estratégicos</h3>
+  <ul>
+    <li><strong>Liderazgo de Bebidas Totales:</strong> Consolidar el primer lugar en gaseosas, aguas, jugos e hidratantes.</li>
+    <li><strong>Digitalización del Bodeguero:</strong> Modernizar los canales tradicionales con herramientas digitales de pedido.</li>
+    <li><strong>Eficiencia Operativa:</strong> Optimizar la cadena de suministro reduciendo la huella de carbono.</li>
+  </ul>
+
+  <h2>3. Alineamiento de Estrategias de Negocio y TI</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Estrategia de Negocio</th>
+        <th>Estrategia de TI Vinculada</th>
+        <th>Tecnologías e Impacto</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Gestión Inteligente de Inventarios</td>
+        <td>Analítica Avanzada y Big Data</td>
+        <td>Machine Learning, Python, Power BI. Reduce quiebres de stock.</td>
+      </tr>
+      <tr>
+        <td>Optimización de la Distribución</td>
+        <td>Digitalización Logística</td>
+        <td>ERP integrado, Apps móviles, TMS y GPS. Reduce costos.</td>
+      </tr>
+      <tr>
+        <td>Sostenibilidad en Información</td>
+        <td>Monitoreo Ambiental Inteligente</td>
+        <td>Sensores IoT y reportes automatizados de huella hídrica.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>4. Implementación del Sistema de Soporte a la Decisión (DSS)</h2>
+  <p>El DSS propuesto integra datos del ERP, WMS y TMS para resolver la falta de visibilidad analítica. Sus módulos principales son:</p>
+  <ul>
+    <li><strong>Módulo de Demanda e Inventarios:</strong> Predicciones con Machine Learning para asegurar stock.</li>
+    <li><strong>Módulo de Sostenibilidad:</strong> Captura de datos vía sensores IoT.</li>
+    <li><strong>Módulo de Análisis de Mercado:</strong> Evaluación de participación de mercado.</li>
+  </ul>
+
+  <h2>5. Modelamiento Dimensional (Kimball)</h2>
+  <h3>5.1. Dimensiones y Jerarquías</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Dimensión Analítica</th>
+        <th>Atributo Clave (PK)</th>
+        <th>Nivel Jerárquico Medio</th>
+        <th>Nivel Jerárquico Detalle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Dim_Tiempo</td>
+        <td>tiempo_key</td>
+        <td>Año / Trimestre</td>
+        <td>Mes / Día / Turno</td>
+      </tr>
+      <tr>
+        <td>Dim_Producto</td>
+        <td>producto_key</td>
+        <td>Categoría</td>
+        <td>Nombre Producto / SKU</td>
+      </tr>
+      <tr>
+        <td>Dim_Cliente_Ubicacion</td>
+        <td>cliente_ubicacion_key</td>
+        <td>Región / Provincia</td>
+        <td>Distrito / Nombre Cliente</td>
+      </tr>
+      <tr>
+        <td>Dim_Bodeguero</td>
+        <td>bodeguero_key</td>
+        <td>Área Almacén</td>
+        <td>Código / Nombre Bodeguero</td>
+      </tr>
+      <tr>
+        <td>Dim_Ruta_Logistica</td>
+        <td>ruta_key</td>
+        <td>Tipo Vehículo</td>
+        <td>Ruta / Transportista</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>5.2. Estructura de Tablas de Hechos</h3>
+  <div class="code-block">
+-- 1. Tabla de Hechos: Gestión Logística de Pedidos
+Fact_pedidos_logistica(
+    tiempo_key (FK), cliente_ubicacion_key (FK), 
+    producto_key (FK), bodeguero_key (FK), ruta_key (FK), 
+    numero_pedido, numero_guia_remision, cantidad_solicitada, 
+    cantidad_preparada, tiempo_preparacion_minutos, 
+    costo_transporte_ruta, dias_desviacion_entrega, pedido_exitoso_flag
+)
+
+-- 2. Tabla de Hechos: Control de Almacenamiento
+fact_control_almacen(
+    tiempo_key (FK), producto_key (FK), bodeguero_key (FK), 
+    stock_inicial, stock_final, movimientos_almacen, 
+    tiempo_reposicion_minutos, nivel_ocupacion_almacen
+)
+
+-- 3. Tabla de Hechos: Distribución de Rutas y Flotas
+Fact_distribucion_rutas(
+    tiempo_key (FK), ruta_key (FK), cliente_ubicacion_key (FK), 
+    total_entregas, costo_total_ruta, tiempo_promedio_entrega, 
+    pedidos_retrasados, distancia_recorrida_km
+)
+  </div>
+
+  <h2>6. Dashboard Interactivo de Resultados</h2>
+  <p><em>(Aquí puedes insertar el código iframe de Power BI publicando tu informe en la web)</em></p>
+  <div style="border: 2px dashed #9ca3af; padding: 40px; text-align: center; background-color: #f9fafb; border-radius: 8px; color: #6b7280; margin-top: 15px;">
+    &lt;iframe title="Reporte_Coca_Cola" width="100%" height="500" src="TU_ENLACE_DE_POWER_BI_AQUÍ" frameborder="0" allowFullScreen="true"&gt;&lt;/iframe&gt;
+  </div>
+
+</div>
+
+</body>
+</html>
